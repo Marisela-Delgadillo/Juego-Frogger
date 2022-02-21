@@ -11,6 +11,12 @@ fase = 330.0
 velocidad_nube = 0.2
 posicion_nube = [-1.0, 0.8, 0.0]
 
+#nube2
+angulo_nube2 = 0.0
+fase2 = 70.0
+velocidad_nube2 = 0.1
+posicion_nube2 = [-1.5, -0.8, 0.0]
+
 #unidades por segundo
 velocidad = 0.5
 posicion_rana = [0.0,-0.95,0.0]
@@ -18,9 +24,9 @@ posiciones_cuadrados = [
      [0.3,-0.85, 0.0],
      [0.8, -0.75, 0.0],
      [-0.4, -0.65, 0.0],
-     [0.2, -0.55, 0.0],
+     [-0.8, -0.55, 0.0],
      [0.7, -0.45, 0.0],
-     [-0.1, -0.55, 0.0],
+     [-0.2, -0.55, 0.0],
      [-0.3, -0.25, 0.0],
      [-0.6, -0.15, 0.0],
      [-0.2, -0.05, 0.0],
@@ -56,7 +62,7 @@ posiciones_cuadrados = [
      
  ]
 
-velocidades_cuadrados=[0.5, 0.4, 0.6, 0.9, 0.5, 0.6, 0.7, 0.5, 0.5, 0.7, 0.9, 0.4, 0.5, 0.8, 0.9, 0.6, 0.5, 0.5, 0.4, 0.6, 0.4, 0.5, 0.6, 0.7, 0.5, 0.9, 0.3, 0.1, 0.9, 0.5, 0.8, 0.9, 0.6, 0.5]
+velocidades_cuadrados=[0.9, 0.4, 0.6, 0.9, 0.5, 1.0, 0.7, 0.9, 1.5, 0.7, 0.9, 0.4, 0.5, 0.8, 0.9, 0.6, 0.5, 1.9, 0.4, 0.6, 1.4, 0.5, 0.6, 0.7, 0.5, 0.9, 0.3, 0.8, 0.9, 0.5, 0.8, 0.9, 0.6, 0.5]
 direcciones_cuadrados=[2,3,3,2,3,3,2,2,2,3,3,2,3,3,2,2,3,2,3,3,2,3,3,2,2,2,3,3,2,3,3,2,2,3]
 
 window = None
@@ -67,6 +73,7 @@ tiempo_anterior = 0.0
 #0 arriba , 1 abajo, 2 izquierda, 3 derecha
 direccion_triangulo = 0
 angulo_triangulo = 0
+angulo_triangulo2 = 0
 direccion_derecha = 3
 direccion_izquierda = 2
 
@@ -101,6 +108,14 @@ def actualizar():
         )
     posicion_nube[1] = posicion_nube[1] + (
             math.sin((angulo_triangulo + fase) * pi / 180.0) * movimiento_nube
+        )
+
+    movimiento_nube2 = velocidad_nube2 * tiempo_delta
+    posicion_nube2[0] = posicion_nube2[0] + (
+            math.cos((angulo_triangulo2 + fase2) * pi / 180.0) * movimiento_nube2
+        )
+    posicion_nube2[1] = posicion_nube[1] + (
+            math.sin((angulo_triangulo2 + fase2) * pi / 180.0) * movimiento_nube2
         )
 
 
@@ -351,6 +366,31 @@ def nube():
         glVertex3f(0.15 * math.cos(angulo * math.pi / 180) + 0.01 , 0.09 * math.sin(angulo * math.pi / 180) + 0.61, 0)
     glEnd()
     glPopMatrix()
+
+    #nube 2
+    glPushMatrix()
+    glTranslatef(posicion_nube2[1], posicion_nube2[0],0.0)
+    glScalef(0.5,0.5,0.0)
+    glBegin(GL_POLYGON)
+    glColor3f(238/255, 238/255, 238/255)
+    for angulo in range(0, 359, 5):
+        glVertex3f(0.1 * math.cos(angulo * math.pi / 180) -0.1 , 0.12 * math.sin(angulo * math.pi / 180) + 0.65, 0)
+    glEnd()
+
+    glBegin(GL_POLYGON)
+    glColor3f(238/255, 238/255, 238/255)
+    for angulo in range(0, 359, 5):
+        glVertex3f(0.15 * math.cos(angulo * math.pi / 180) -0.15 , 0.09 * math.sin(angulo * math.pi / 180) + 0.61, 0)
+    glEnd()
+
+    glBegin(GL_POLYGON)
+    glColor3f(238/255, 238/255, 238/255)
+    for angulo in range(0, 359, 5):
+        glVertex3f(0.15 * math.cos(angulo * math.pi / 180) + 0.01 , 0.09 * math.sin(angulo * math.pi / 180) + 0.61, 0)
+    glEnd()
+    glPopMatrix()
+
+
 
 
 def background():
@@ -623,6 +663,98 @@ def background():
     glEnd()
     glPopMatrix()
 
+    	#Neufar
+    glPushMatrix()
+    glScalef(.9,.9,0)
+    glTranslatef(0.33,-0.83,0.0)
+    glBegin(GL_POLYGON)
+    glColor3f(40/255, 121/255, 17/255)
+    for angulo in range(0, 359, 5):
+        glVertex3f(0.04 * math.cos(angulo * math.pi / 180) + 0.3 , 0.025 * math.sin(angulo * math.pi / 180) - 0.23, 0)
+    glEnd()
+    glPopMatrix() 
+
+	#tronco
+    glBegin(GL_QUADS)
+    glColor3f(0.6, 0.3, 0.3)
+    glVertex3f(-0.9,-0.92,0.0)
+    glVertex3f(-0.4, -0.92,0.0)
+    glVertex3f(-0.4,-0.98,0.0)
+    glVertex3f(-0.9,-0.98,0.0)
+    glEnd()
+
+	#Lienas calle & Cruce peatonal
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 1.0)
+    glVertex3f(-1.0,0.025,0.0)
+    glVertex3f(-0.8,0.025,0.0)
+    glVertex3f(-0.8,-0.025,0.0)
+    glVertex3f(-1.0,-0.025,0.0)
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 1.0)
+    glVertex3f(-1.0,0.125,0.0)
+    glVertex3f(-0.8,0.125,0.0)
+    glVertex3f(-0.8,0.075,0.0)
+    glVertex3f(-1.0,0.075,0.0)
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 1.0)
+    glVertex3f(-1.0,0.225,0.0)
+    glVertex3f(-0.8,0.225,0.0)
+    glVertex3f(-0.8,0.175,0.0)
+    glVertex3f(-1.0,0.175,0.0)
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 1.0)
+    glVertex3f(-1.0,-0.075,0.0)
+    glVertex3f(-0.8,-0.075,0.0)
+    glVertex3f(-0.8,-0.125,0.0)
+    glVertex3f(-1.0,-0.125,0.0)
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 1.0)
+    glVertex3f(-1.0,-0.175,0.0)
+    glVertex3f(-0.8,-0.175,0.0)
+    glVertex3f(-0.8,-0.225,0.0)
+    glVertex3f(-1.0,-0.225,0.0)
+    glEnd()
+
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 1.0)
+    glVertex3f(-0.5,0.025,0.0)
+    glVertex3f(-0.3,0.025,0.0)
+    glVertex3f(-0.3,-0.025,0.0)
+    glVertex3f(-0.5,-0.025,0.0)
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 1.0)
+    glVertex3f(0.0,0.025,0.0)
+    glVertex3f(0.2,0.025,0.0)
+    glVertex3f(0.2,-0.025,0.0)
+    glVertex3f(0.0,-0.025,0.0)
+    glEnd()
+
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 1.0)
+    glVertex3f(0.5,0.025,0.0)
+    glVertex3f(0.7,0.025,0.0)
+    glVertex3f(0.7,-0.025,0.0)
+    glVertex3f(0.5,-0.025,0.0)
+    glEnd()
+    #alcantarilla    
+    glBegin(GL_POLYGON)
+    glColor3f(84/255,85/255,84/255)
+    for angulo in range(0,359,5):
+        glVertex3f(0.075 * math.cos(angulo * math.pi / 180) + 0.01, 0.075 * math.sin(angulo * math.pi / 180) + 0.65, 0)
+    glEnd()
 
 
     
