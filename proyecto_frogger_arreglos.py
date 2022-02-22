@@ -18,9 +18,9 @@ velocidad_nube2 = 0.1
 posicion_nube2 = [-1.5, -0.8, 0.0]
 
 #unidades por segundo
-velocidad = 0.5
+#velocidad = 0.5
 posicion_rana = [0.0,-0.95,0.0]
-posiciones_cuadrados = [
+posiciones_carros = [
      [0.3,-0.85, 0.0],
      [0.8, -0.75, 0.0],
      [-0.4, -0.65, 0.0],
@@ -39,7 +39,6 @@ posiciones_cuadrados = [
      [-0.2, 0.65, 0.0],
      [0.5, 0.75, 0.0],
      [0.2, 0.85, 0.0],
-     #mas cuadros
      [0.5,-0.85, 0.0],
      [0.5, -0.75, 0.0],
      [-0.9, -0.65, 0.0],
@@ -62,18 +61,17 @@ posiciones_cuadrados = [
      
  ]
 
-velocidades_cuadrados=[0.9, 0.4, 0.6, 0.9, 0.5, 1.0, 0.7, 0.9, 1.5, 0.7, 0.9, 0.4, 0.5, 0.8, 0.9, 0.6, 0.5, 1.9, 0.4, 0.6, 1.4, 0.5, 0.6, 0.7, 0.5, 0.9, 0.3, 0.8, 0.9, 0.5, 0.8, 0.9, 0.6, 0.5]
-direcciones_cuadrados=[2,3,3,2,3,3,2,2,2,3,3,2,3,3,2,2,3,2,3,3,2,3,3,2,2,2,3,3,2,3,3,2,2,3]
+velocidades_carros=[0.9, 0.4, 0.6, 0.9, 0.5, 1.0, 0.7, 0.9, 1.5, 0.7, 0.9, 0.4, 0.5, 0.8, 0.9, 0.6, 0.5, 1.9, 0.4, 0.6, 1.4, 0.5, 0.6, 0.7, 0.5, 0.9, 0.3, 0.8, 0.9, 0.5, 0.8, 0.9, 0.6, 0.5]
+direcciones_carros=[2,3,3,2,3,3,2,2,2,3,3,2,3,3,2,2,3,2,3,3,2,3,3,2,2,2,3,3,2,3,3,2,2,3]
 
 window = None
-velocidad_triangulo = 0.1
+velocidad_rana = 0.1
 
 tiempo_anterior = 0.0
 
 #0 arriba , 1 abajo, 2 izquierda, 3 derecha
-direccion_triangulo = 0
-angulo_triangulo = 0
-angulo_triangulo2 = 0
+angulo_nube = 0
+angulo_nube2 = 0
 direccion_derecha = 3
 direccion_izquierda = 2
 
@@ -82,9 +80,9 @@ def actualizar():
     global tiempo_anterior
     global window
     global posicion_rana
-    global direccion_triangulo
-    global angulo_triangulo
-    global velocidad_triangulo
+    global angulo_nube
+    global angulo_nube2
+    global velocidad_rana
 
 
     tiempo_actual = glfw.get_time()
@@ -92,30 +90,30 @@ def actualizar():
     tiempo_delta = tiempo_actual - tiempo_anterior
     
     for i in range(34):
-        cantidad_movimiento = velocidades_cuadrados[i] * tiempo_delta
-        if direcciones_cuadrados[i] == 2:
-            posiciones_cuadrados[i][0] = posiciones_cuadrados[i][0] - cantidad_movimiento
-            if posiciones_cuadrados[i][0] <= -1:
-                posiciones_cuadrados[i][0] = 1
-        if direcciones_cuadrados[i] == 3:
-            posiciones_cuadrados[i][0] = posiciones_cuadrados[i][0] + cantidad_movimiento
-            if posiciones_cuadrados[i][0] >= 1:
-                posiciones_cuadrados[i][0] = -1
+        cantidad_movimiento = velocidades_carros[i] * tiempo_delta
+        if direcciones_carros[i] == 2:
+            posiciones_carros[i][0] = posiciones_carros[i][0] - cantidad_movimiento
+            if posiciones_carros[i][0] <= -1:
+                posiciones_carros[i][0] = 1
+        if direcciones_carros[i] == 3:
+            posiciones_carros[i][0] = posiciones_carros[i][0] + cantidad_movimiento
+            if posiciones_carros[i][0] >= 1:
+                posiciones_carros[i][0] = -1
 
     movimiento_nube = velocidad_nube * tiempo_delta
     posicion_nube[0] = posicion_nube[0] + (
-            math.cos((angulo_triangulo + fase) * pi / 180.0) * movimiento_nube
+            math.cos((angulo_nube + fase) * pi / 180.0) * movimiento_nube
         )
     posicion_nube[1] = posicion_nube[1] + (
-            math.sin((angulo_triangulo + fase) * pi / 180.0) * movimiento_nube
+            math.sin((angulo_nube + fase) * pi / 180.0) * movimiento_nube
         )
 
     movimiento_nube2 = velocidad_nube2 * tiempo_delta
     posicion_nube2[0] = posicion_nube2[0] + (
-            math.cos((angulo_triangulo2 + fase2) * pi / 180.0) * movimiento_nube2
+            math.cos((angulo_nube2 + fase2) * pi / 180.0) * movimiento_nube2
         )
     posicion_nube2[1] = posicion_nube[1] + (
-            math.sin((angulo_triangulo2 + fase2) * pi / 180.0) * movimiento_nube2
+            math.sin((angulo_nube2 + fase2) * pi / 180.0) * movimiento_nube2
         )
 
 
@@ -124,7 +122,7 @@ def actualizar():
 #Movimiento rana
 def key_callback(window, key, scancode, action, mods):
     global posicion_rana
-    global velocidad_triangulo
+    global velocidad_rana
 
     #Que la tecla escape cierre ventana al ser presionada
     if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
@@ -136,37 +134,35 @@ def key_callback(window, key, scancode, action, mods):
         if posicion_rana[0] <= -0.9 :
             posicion_rana[0]=posicion_rana[0]
         else:
-            posicion_rana[0] =  posicion_rana[0] - velocidad_triangulo
+            posicion_rana[0] =  posicion_rana[0] - velocidad_rana
     #DERECHA CON flecha
     if key == glfw.KEY_RIGHT and (action == glfw.PRESS):
         if posicion_rana[0] >= 0.9 :
             posicion_rana[0]=posicion_rana[0]
         else:
-            posicion_rana[0] =  posicion_rana[0] + velocidad_triangulo
+            posicion_rana[0] =  posicion_rana[0] + velocidad_rana
     #ARRIBA CON flecha
     if key == glfw.KEY_UP and (action == glfw.PRESS):
         if posicion_rana[1] >= 0.9 :
             posicion_rana[1]=posicion_rana[1]
         else:
-            posicion_rana[1] =  posicion_rana[1] + velocidad_triangulo
+            posicion_rana[1] =  posicion_rana[1] + velocidad_rana
     #ABAJO CON flecha
     if key == glfw.KEY_DOWN and (action == glfw.PRESS):
         if posicion_rana[1] <= -0.9 :
             posicion_rana[1]=posicion_rana[1]
         else:
-         posicion_rana[1] =  posicion_rana[1] - velocidad_triangulo
+         posicion_rana[1] =  posicion_rana[1] - velocidad_rana
 
 def colisionando():
     colisionando = False
-
     for i in range(34):
-        if (posicion_rana[0] + 0.04 >= posiciones_cuadrados[i][0] - 0.05 
-            and posicion_rana[0] - 0.04 <= posiciones_cuadrados[i][0] + 0.05 
-            and posicion_rana[1] + 0.04 >= posiciones_cuadrados[i][1] - 0.05 
-            and posicion_rana[1] - 0.04 <= posiciones_cuadrados[i][1] + 0.05):
+        if (posicion_rana[0] + 0.04 >= posiciones_carros[i][0] - 0.05 
+            and posicion_rana[0] - 0.04 <= posiciones_carros[i][0] + 0.05 
+            and posicion_rana[1] + 0.04 >= posiciones_carros[i][1] - 0.05 
+            and posicion_rana[1] - 0.04 <= posiciones_carros[i][1] + 0.05):
             
             colisionando = True 
-
     return colisionando
 
 def draw_ranita():
@@ -228,14 +224,14 @@ def draw_ranita():
 
     glPopMatrix()
 
-def draw_cuadrado():
-    global posiciones_cuadrados
+def draw_carro():
+    global posiciones_carros
 
     for i in range(34):
         glPushMatrix()
-        glTranslatef(posiciones_cuadrados[i][0], posiciones_cuadrados[i][1], 0.0)
+        glTranslatef(posiciones_carros[i][0], posiciones_carros[i][1], 0.0)
 
-        if direcciones_cuadrados[i] == 2:
+        if direcciones_carros[i] == 2:
             glBegin(GL_QUADS)
             glColor3f(255/255,54/255,0/255)
             glVertex3f(-0.03,0.04,0.0)
@@ -341,7 +337,7 @@ def draw_cuadrado():
 
 def draw():
     draw_ranita()
-    draw_cuadrado()
+    draw_carro()
 
 def nube():
     #Nube 1
@@ -389,9 +385,6 @@ def nube():
         glVertex3f(0.15 * math.cos(angulo * math.pi / 180) + 0.01 , 0.09 * math.sin(angulo * math.pi / 180) + 0.61, 0)
     glEnd()
     glPopMatrix()
-
-
-
 
 def background():
 
@@ -471,7 +464,6 @@ def background():
     glVertex3f(-1.0,-1,0.0)
     glEnd()
     
-      
     #final
     glBegin(GL_QUADS)
     glColor3f(255/255, 243/255, 1/255)
@@ -545,7 +537,6 @@ def background():
     glVertex3f(0.2,-0.025,0.0)
     glVertex3f(0.0,-0.025,0.0)
     glEnd()
-
 
     glBegin(GL_QUADS)
     glColor3f(1.0, 1.0, 1.0)
@@ -663,7 +654,7 @@ def background():
     glEnd()
     glPopMatrix()
 
-    	#Neufar
+    #Neufar
     glPushMatrix()
     glScalef(.9,.9,0)
     glTranslatef(0.33,-0.83,0.0)
@@ -741,7 +732,6 @@ def background():
     glVertex3f(0.0,-0.025,0.0)
     glEnd()
 
-
     glBegin(GL_QUADS)
     glColor3f(1.0, 1.0, 1.0)
     glVertex3f(0.5,0.025,0.0)
@@ -755,12 +745,6 @@ def background():
     for angulo in range(0,359,5):
         glVertex3f(0.075 * math.cos(angulo * math.pi / 180) + 0.01, 0.075 * math.sin(angulo * math.pi / 180) + 0.65, 0)
     glEnd()
-
-
-    
-
-
-
 
 def main():
     global window
@@ -804,8 +788,7 @@ def main():
         actualizar()
         draw()
         nube()
-
-
+        
         glfw.poll_events()
 
         glfw.swap_buffers(window)
